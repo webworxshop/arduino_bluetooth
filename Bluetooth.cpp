@@ -12,25 +12,25 @@
 #include <Bluetooth.h>
 
 Bluetooth::Bluetooth(){
-    Serial1.begin(115200);
+    Serial.begin(115200);
 }
 
 Bluetooth::~Bluetooth(){}
 
 char Bluetooth::beginCMD(){
-  Serial1.print("$$$");
+  Serial.print("$$$");
   
   return readUntilLine() == "CMD";
 }
 void Bluetooth::endCMD(){
-  Serial1.println("---");
+  Serial.println("---");
   
   readUntilStr("END", 5000);
 }
 
 void Bluetooth::connect(){
   do{
-    Serial1.println("C");
+    Serial.println("C");
   } while(readUntilStr("failed", 10000).indexOf("failed") != -1);
 }
 
@@ -39,7 +39,7 @@ char Bluetooth::connectToAddr(String addr){
 }
 
 char Bluetooth::isConnected(){
-  Serial1.println("GK");
+  Serial.println("GK");
   
   return readUntilDelay(1000) != "0";
 }
@@ -51,8 +51,8 @@ String Bluetooth::readUntilStr(String str, unsigned long timeout){
   start = millis();
   Serial.flush();
   while (resp.indexOf(str) == -1 && start + timeout > millis()){
-    while(Serial1.available()){
-      c = char(Serial1.read());
+    while(Serial.available()){
+      c = char(Serial.read());
       
       resp.concat(c);
     }
@@ -66,8 +66,8 @@ String Bluetooth::readUntilLine(){
   char c = 0;
   
   while (c != '\n'){
-    while(Serial1.available()){
-      c = char(Serial1.read());
+    while(Serial.available()){
+      c = char(Serial.read());
       
       resp.concat(c);
     }
@@ -82,8 +82,8 @@ String Bluetooth::readUntilDelay(unsigned long delay){
   start = millis();
   Serial.flush();
   while(start + delay > millis()){
-    while(Serial1.available())
-      resp.concat(char(Serial1.read()));
+    while(Serial.available())
+      resp.concat(char(Serial.read()));
   }
   
   return resp;
