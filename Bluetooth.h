@@ -12,7 +12,6 @@
 
 #include <stdint.h>
 #include <Arduino.h>
-#include <Serial.h>
 
 class Bluetooth{
 
